@@ -1,0 +1,4 @@
+dash
+pandas
+numpy
+dash_bootstrap_components
