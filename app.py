@@ -22,4 +22,8 @@ app.layout = html.Div([
 ], style={'margin-left': '2%', 'margin-right': '2%', 'margin-top': '15px'})
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
+	app.run_server(
+        host='0.0.0.0',
+        port=8080,
+        debug=False
+    )
