@@ -52,7 +52,10 @@ class files:
             try:
                 df[col] = df[col].str.replace(',', '')
                 df[col] = df[col].astype(np.float64)
+
             except Exception as e:
                 print(e)
+
+        df.rename(columns={'RANK': 'id'}, inplace=True)
 
         return df
