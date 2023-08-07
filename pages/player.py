@@ -74,13 +74,13 @@ def graph_fantasy_points(player_data):
     df = pd.read_json(player_data, orient='split')
 
     fig = go.Figure(go.Scatter(
-        x=df.Year, y=df.FPTS
+        x=df.year, y=df.fpts
     ))
 
     fig.update_layout(
         xaxis=dict(
             tickmode='array',
-            tickvals=df.Year
+            tickvals=df.year
         ),
         title_text = 'Fantasy Points Per Year',
         title_x = 0.5

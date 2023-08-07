@@ -37,25 +37,12 @@ layout = html.Div(children=[
         ], style={'display': 'flex', 'flex-direction': 'row', 'margin-bottom': '10px'}),
 
     html.Br(),
-    html.Div([
-        dash_table.DataTable(
-            id='player-stats',
-            data = df.to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in df.columns],
-            sort_action='native',
-            style_data={
-                'backgroundColor': '#FAF9F6',
-                'color': 'black'
-            },
-            row_selectable='multi',
-            selected_rows=[]
-    )
-    ])
+    html.Div(id='player-stats')
 ])
 
 
 @callback(
-    Output(component_id='player-stats', component_property='data'),
+    Output(component_id='player-stats', component_property='children'),
     Input(component_id='year-radioItem', component_property='value'),
     Input(component_id='position-radioItem', component_property='value')
 )
@@ -63,7 +50,13 @@ def show_player_stats(year, position):
     df = files.get_files(year, position)
     df = files.clean_data(df)
 
-    return df.to_dict('records')
+    dt = dash_table.DataTable(
+        data = df.to_dict('records'),
+        columns = [{'name': i, 'id': i} for i in df.columns],
+        sort_action='native'
+    )
+
+    return dt
 
 @callback(
     Output("player-stats", "style_data_conditional"),
@@ -71,7 +64,7 @@ def show_player_stats(year, position):
 )
 def style_selected_rows(sel_rows):
     if sel_rows is None:
-        sel_rows = [0]  # select row that doesn't exist to avoid error
+        raise PreventUpdate
 
     val = [
         {"if": {"filter_query": "{{id}} ={}".format(i)}, "backgroundColor": "#FFCCCB",}
