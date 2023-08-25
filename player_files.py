@@ -47,9 +47,16 @@ class files:
 
             df_combined = pd.concat([df_clean_18, df_clean_19, df_clean_20, df_clean_21, df_clean_22],
                                     ignore_index=True)
+
+            # clean names of players
+            df_combined = files.clean_names(df_combined)
+            df = files.clean_names(df)
+
+            # merge fantasy stats and PFR stats
             df_merged = pd.merge(df, df_combined, on=['firstName', 'lastName', 'year'], how='inner')
 
-            df = df_merged[['rank', 'player', 'Age', 'Tm', 'cmp', 'att', 'pct', 'yds', 'y/a', 'td', 'int', 'sacks', 'att.1', 'yds.1', 'td.1', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
+            df = df_merged[['rank', 'player', 'Age', 'Tm', 'cmp', 'att', 'pct', 'yds', 'y/a', 'td', 'int', 'sacks',
+                            'rush_att', 'rush_yds', 'rush_td', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
         elif (position == 'RB'):
             df = pd.read_csv('./StatFiles/rb_stats.csv')
             df = files.clean_df(df)
@@ -71,9 +78,16 @@ class files:
 
             df_combined = pd.concat([df_clean_18, df_clean_19, df_clean_20, df_clean_21, df_clean_22],
                                     ignore_index=True)
+
+            # clean names of players
+            df_combined = files.clean_names(df_combined)
+            df = files.clean_names(df)
+
+            # merge fantasy stats and PFR stats
             df_merged = pd.merge(df, df_combined, on=['firstName', 'lastName', 'year'], how='inner')
 
-            df = df_merged[['rank', 'player', 'Age', 'Tm', 'att', 'yds', 'y/a', 'lg', '20+', 'td', 'rec', 'tgt', 'yds.1', 'y/r', 'td.1', 'fl', 'fpts', 'fpts/g', 'year']]
+            df = df_merged[['rank', 'player', 'Age', 'Tm', 'att', 'yds', 'y/a', 'lg', '20+', 'td', 'rec', 'tgt',
+                            'rec_yds', 'y/r', 'rec_td', 'fl', 'fpts', 'fpts/g', 'year']]
         elif (position == 'WR'):
             df = pd.read_csv('./StatFiles/wr_stats.csv')
             df = files.clean_df(df)
@@ -95,9 +109,16 @@ class files:
 
             df_combined = pd.concat([df_clean_18, df_clean_19, df_clean_20, df_clean_21, df_clean_22],
                                     ignore_index=True)
+
+            # clean names of players
+            df_combined = files.clean_names(df_combined)
+            df = files.clean_names(df)
+
+            # merge fantasy stats and PFR stats
             df_merged = pd.merge(df, df_combined, on=['firstName', 'lastName', 'year'], how='inner')
 
-            df = df_merged[['rank', 'player', 'Age', 'Tm', 'rec', 'tgt', 'Ctch%', 'yds', 'y/r', 'lg', 'td', 'att', 'yds.1', 'td.1', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
+            df = df_merged[['rank', 'player', 'Age', 'Tm', 'rec', 'tgt', 'Ctch%', 'yds', 'y/r', 'lg', 'td', 'rush_att',
+                            'rush_yds', 'rush_td', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
         elif (position == 'TE'):
             df = pd.read_csv('./StatFiles/te_stats.csv')
             df = files.clean_df(df)
@@ -119,9 +140,16 @@ class files:
 
             df_combined = pd.concat([df_clean_18, df_clean_19, df_clean_20, df_clean_21, df_clean_22],
                                     ignore_index=True)
+
+            # clean names of players
+            df_combined = files.clean_names(df_combined)
+            df = files.clean_names(df)
+
+            # merge fantasy stats and PFR stats
             df_merged = pd.merge(df, df_combined, on=['firstName', 'lastName', 'year'], how='inner')
 
-            df = df_merged[['rank', 'player', 'Age', 'Tm', 'rec', 'tgt', 'Ctch%', 'yds', 'y/r', 'lg', 'td', 'att', 'yds.1', 'td.1', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
+            df = df_merged[['rank', 'player', 'Age', 'Tm', 'rec', 'tgt', 'Ctch%', 'yds', 'y/r', 'lg', 'td', 'rush_att',
+                            'rush_yds', 'rush_td', 'fl', 'g', 'fpts', 'fpts/g', 'year']]
 
         if (year is None):
             df = df[df.year == 2022]
@@ -132,6 +160,13 @@ class files:
 
 
         return df
+
+    def clean_names(df):
+        new_df = df.copy()
+        new_df.firstName = new_df.firstName.str.replace('.', '')
+        new_df.lastName = new_df.lastName.str.replace('.', '')
+
+        return new_df
 
     def get_player_stats(player_name):
         qb_df = files.get_files('all', 'QB')
@@ -172,6 +207,6 @@ class files:
             except Exception as e:
                 print(e)
 
-        df.rename(columns={'RANK': 'id'}, inplace=True)
+        # df.rename(columns={'RNA': 'id'}, inplace=True)
 
         return df
