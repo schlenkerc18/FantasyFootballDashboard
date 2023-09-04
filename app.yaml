@@ -13,11 +13,11 @@
 # limitations under the License.
 
 runtime: python
-env: flex
 steps:
   -
     entrypoint: gunicorn -b 0.0.0.0:8080 app:server
     args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
+timeout: '1600s'
 
 
 # This sample incurs costs to run on the App Engine flexible environment.
