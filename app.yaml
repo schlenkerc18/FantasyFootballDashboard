@@ -16,8 +16,6 @@ runtime: python
 env: flex
 entrypoint: gunicorn -b 0.0.0.0:8080 app:server
 
-runtime_config:
-  operating_system: ubuntu22
 
 # This sample incurs costs to run on the App Engine flexible environment.
 # The settings below are to reduce costs during testing and are not appropriate
